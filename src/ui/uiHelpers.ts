@@ -43,7 +43,7 @@ export function makeButton(
   container.add([bg, text]);
   container.setSize(width, height);
   if (!opts.disabled) {
-    container.setInteractive(new Phaser.Geom.Rectangle(-width / 2, -height / 2, width, height), Phaser.Geom.Rectangle.Contains);
+    container.setInteractive({ useHandCursor: true });
     container.on('pointerover', () => draw(true));
     container.on('pointerout', () => draw(false));
     container.on('pointerdown', () => { if (opts.onClick) opts.onClick(); });

@@ -103,20 +103,27 @@ export class CharCreationScene extends Phaser.Scene {
     makeButton(this, width / 2 - 130, height - 50, 'Назад', {
       onClick: () => this.scene.start('MainMenu'),
     });
-    makeButton(this, width / 2 + 130, height - 50, 'В путь →', {
-      onClick: () => {
-        if (this.points !== 0) {
-          this.descText.setText('Распредели все очки характеристик прежде чем начать.');
-          this.descText.setColor('#ff8080');
-          return;
-        }
-        const player = makePlayer(this.name || 'Странник', this.stats);
-        gameState.player = player;
-        gameState.killedEnemies = new Set();
-        gameState.lootedPiles = new Set();
-        this.scene.start('World');
-        this.scene.launch('UI');
-      },
+    const startGame = () => {
+      if (this.points !== 0) {
+        this.descText.setText('Распредели все очки характеристик прежде чем начать.');
+        this.descText.setColor('#ff8080');
+        return;
+      }
+      const player = makePlayer(this.name || 'Странник', this.stats);
+      gameState.player = player;
+      gameState.killedEnemies = new Set();
+      gameState.lootedPiles = new Set();
+      this.scene.start('World');
+      this.scene.launch('UI');
+    };
+
+    makeButton(this, width / 2 + 130, height - 50, 'В путь →', { onClick: startGame });
+
+    this.input.keyboard?.on('keydown-ENTER', () => {
+      if (document.activeElement instanceof HTMLInputElement) {
+        (document.activeElement as HTMLInputElement).blur();
+      }
+      startGame();
     });
   }
 
